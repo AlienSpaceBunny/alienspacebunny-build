@@ -80,12 +80,14 @@ One-time setup (the `com.alienspacebunny` namespace is already verified):
 
 1. **Portal token:** central.sonatype.com → Account → Generate User Token. Store
    it as repository secrets `CENTRAL_USERNAME` and `CENTRAL_PASSWORD`.
-2. **Signing key:** create one (`gpg --quick-gen-key "AlienSpaceBunny releases" ed25519 sign 3y`),
+2. **Signing key:** create one (`gpg --quick-gen-key "AlienSpaceBunny Releases <email>" rsa4096 sign 3y`),
    publish the public key (`gpg --keyserver keys.openpgp.org --send-keys <KEYID>`,
    then confirm the address by email; `keyserver.ubuntu.com` also works), and store
    `gpg --armor --export-secret-keys <KEYID>` and its passphrase as secrets
    `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE`.
-3. **Push access:** the workflow pushes the release commits and tag to `main` with
+3. **Recovery:** if the upload fails after the tag was pushed, run the workflow again
+   with **existingTag** set (e.g. `v0.1.1`). It skips `release:prepare` and republishes that tag.
+4. **Push access:** the workflow pushes the release commits and tag to `main` with
    the job's `GITHUB_TOKEN`. If `main` is protected, allow GitHub Actions to bypass.
 
 Local check without uploading (no credentials needed; it fails only at the upload
