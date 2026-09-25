@@ -9,11 +9,11 @@ This module contains shared maven config and shared build tools for AlienSpaceBu
 | `build-tools/` | `com.alienspacebunny:alienspacebunny-build-tools` (jar) | Shared `alienspacebunny/checkstyle.xml`, loaded from the Checkstyle plugin classpath |
 | `template/` + `new-project.sh` | — | Skeleton for a new project on the current parent |
 
-Nothing is published to a remote repository. Install locally before building any
-consumer:
+Nothing is published to a remote Maven repository. Consumers resolve the parent from
+`~/.m2`, so on a fresh machine install the release they use first:
 
 ```bash
-mvn install
+git checkout v0.1.1 && mvn install && git checkout -   # or: mvn install on main for the current snapshot
 ```
 
 ## Using the parent
@@ -41,15 +41,17 @@ To add to a list setting instead of replacing it, e.g. an extra source root, use
 
 ## Updating a version (goal: one place)
 
-1. Edit the pin in `parent/pom.xml` (or the rules in `build-tools/`).
-2. Bump this repository's version. `build-tools` and `parent` always share it,
-   and the parent refers to build-tools through a property, so set both:
+1. Edit the pin in `parent/pom.xml` (or the rules in `build-tools/`), then run `mvn install`
+   and commit.
+2. Cut a local release. The release plugin versions all three POMs together,
+   including `parent/`, which doesn't inherit from the aggregator, and the
+   parent's `asb.build-tools.version` property:
    ```bash
-   mvn versions:set -DnewVersion=0.1.1
-   mvn -pl parent versions:set-property -Dproperty=asb.build-tools.version -DnewVersion=0.1.1
-   mvn install
+   mvn release:prepare release:perform   # tags v0.1.1, installs 0.1.1, moves to 0.1.2-SNAPSHOT
+   git push && git push origin v0.1.1    # only when you choose to publish
    ```
-   Use release versions only (no `-SNAPSHOT`), so consumer builds stay reproducible.
+   Don't use `versions:set` for this: it skips `parent/`. Consumers depend on release
+   versions only, never `-SNAPSHOT`.
 3. In each consumer, then run `./mvnw spotless:apply verify`:
    ```bash
    ./mvnw versions:update-parent -DparentVersion=0.1.1 -DgenerateBackupPoms=false
