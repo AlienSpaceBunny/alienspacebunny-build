@@ -1,0 +1,73 @@
+# Manually triggered release: tag with maven-release-plugin, push, then publish
+# alienspacebunny-parent and alienspacebunny-build-tools to Maven Central.
+#
+# Required repository secrets (see README "Maven Central"):
+#   CENTRAL_USERNAME / CENTRAL_PASSWORD  Central Portal user token
+#   GPG_PRIVATE_KEY / GPG_PASSPHRASE     armored signing key and its passphrase
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: Release version (blank = current version without -SNAPSHOT)
+        required: false
+      developmentVersion:
+        description: Next development version (blank = next patch -SNAPSHOT)
+        required: false
+      autoPublish:
+        description: Publish automatically (unchecked = upload and validate only; click Publish in the Central Portal)
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: corretto
+          java-version: '25'
+          cache: maven
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Configure git for release commits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # The POM's developerConnection is SSH; push over HTTPS with the job token instead.
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+
+      - name: Prepare release (verify, tag, push)
+        env:
+          RELEASE_VERSION: ${{ inputs.releaseVersion }}
+          DEVELOPMENT_VERSION: ${{ inputs.developmentVersion }}
+        run: >-
+          ./mvnw -B -ntp release:prepare -Dasb.release.push=true
+          ${RELEASE_VERSION:+-DreleaseVersion=$RELEASE_VERSION}
+          ${DEVELOPMENT_VERSION:+-DdevelopmentVersion=$DEVELOPMENT_VERSION}
+
+      - name: Publish tagged release to Maven Central
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          AUTO_PUBLISH: ${{ inputs.autoPublish }}
+        run: |
+          tag=$(sed -n 's/^scm.tag=//p' release.properties)
+          git checkout --quiet "$tag"
+          ./mvnw -B -ntp -Pcentral-release deploy -Dasb.central.autoPublish="$AUTO_PUBLISH"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alienspacebunny</groupId>
@@ -9,6 +9,28 @@
     <name>AlienSpaceBunny parent POM</name>
     <description>Shared Java 25 build: plugin pins, test-library versions and the
         Spotless / Checkstyle / SpotBugs quality gates bound to verify.</description>
+    <url>https://github.com/AlienSpaceBunny/alienspacebunny-build</url>
+    <!-- Inherited by consumers unless they declare their own (rv32ima-java: MIT). -->
+    <licenses>
+        <license>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://www.mozilla.org/MPL/2.0/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Nate Edel</name>
+            <url>https://github.com/nkedel</url>
+        </developer>
+    </developers>
+    <!-- A consumer publishing to Central must declare its own <url> and <scm>. -->
+    <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
+        <connection>scm:git:https://github.com/AlienSpaceBunny/alienspacebunny-build.git</connection>
+        <developerConnection>scm:git:git@github.com:AlienSpaceBunny/alienspacebunny-build.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/AlienSpaceBunny/alienspacebunny-build</url>
+    </scm>
     <!--
         Consumers set <parent> to this artifact with <relativePath/> and override only
         what differs. Override points (properties):
@@ -22,6 +44,8 @@
     -->
     <properties>
         <asb.build-tools.version>0.1.1-SNAPSHOT</asb.build-tools.version>
+        <!-- CI passes -Dasb.central.autoPublish=true to publish without the Portal click. -->
+        <asb.central.autoPublish>false</asb.central.autoPublish>
         <asb.checkstyle.config>alienspacebunny/checkstyle.xml</asb.checkstyle.config>
         <asb.config.dir>${maven.multiModuleProjectDirectory}/config</asb.config.dir>
         <asb.spotbugs.exclude>${asb.config.dir}/spotbugs-exclude.xml</asb.spotbugs.exclude>
@@ -185,6 +209,16 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.2.8</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.11.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -397,4 +431,60 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <!--
+            Maven Central: `mvn -Pcentral-release deploy` from a release tag. Needs a
+            `central` server (Portal user token) in settings.xml and a GPG key, with
+            MAVEN_GPG_PASSPHRASE for the passphrase. Consumers inherit this profile too;
+            jar modules must also attach javadoc (rv32ima-java already does).
+        -->
+        <profile>
+            <id>central-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <phase>verify</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <!-- false: upload and validate only; click Publish in the Portal. -->
+                            <autoPublish>${asb.central.autoPublish}</autoPublish>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
