@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+    Approved style rules for handwritten Java, including tests.
+    Import order follows Palantir Baseline at 0257e6e26a08e78570816b5d1d6e6dcdf60b13ee:
+    https://github.com/palantir/gradle-baseline/blob/0257e6e26a08e78570816b5d1d6e6dcdf60b13ee/gradle-baseline-java-config/resources/checkstyle/checkstyle.xml
+    Continuations are relaxed to four spaces for Palantir 2.98.0 output.
+    Palantir formats on demand; all three quality checks run at verify.
+    Wildcard imports are banned. No forced-brace, Javadoc-completeness or
+    complexity policy is imposed. Violations fail the verify phase.
+-->
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="fileExtensions" value="java"/>
+    <module name="NewlineAtEndOfFile"/>
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+    <!-- Palantir's 120-column target is soft, notably for string literals. -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Trailing whitespace."/>
+    </module>
+    <module name="TreeWalker">
+        <module name="AvoidStarImport"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="StaticVariableName"/>
+        <module name="StringLiteralEquality"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="OuterTypeFilename"/>
+        <module name="OneTopLevelClass"/>
+        <module name="PackageName"/>
+        <module name="TypeName"/>
+        <module name="MethodName"/>
+        <module name="MemberName"/>
+        <module name="ParameterName"/>
+        <module name="LocalVariableName"/>
+        <module name="ConstantName"/>
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <!-- Match Palantir import ordering; Spotless handles automatic cleanup. -->
+        <module name="ImportOrder">
+            <property name="groups" value="/.*/"/>
+            <property name="option" value="top"/>
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="4"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="arrayInitIndent" value="4"/>
+            <property name="forceStrictCondition" value="false"/>
+        </module>
+        <!-- Checkstyle 14.1 disagrees with Palantir on switch expressions wrapped
+             after return/assignment. Exempt their indentation only, not statements. -->
+        <module name="SuppressionXpathSingleFilter">
+            <property name="checks" value="Indentation"/>
+            <property name="query" value="//LITERAL_SWITCH[parent::EXPR]/descendant-or-self::*"/>
+        </module>
+        <module name="LeftCurly"/>
+        <module name="RightCurly"/>
+        <module name="WhitespaceAround">
+            <property name="allowEmptyConstructors" value="true"/>
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyTypes" value="true"/>
+            <property name="allowEmptyLoops" value="true"/>
+            <property name="allowEmptyLambdas" value="true"/>
+            <property name="allowEmptyCatches" value="true"/>
+            <property name="allowEmptySwitchBlockStatements" value="true"/>
+        </module>
+        <module name="WhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="ParenPad"/>
+        <module name="MethodParamPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="GenericWhitespace"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
+        <module name="FallThrough"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="OneStatementPerLine"/>
+        <module name="MultipleVariableDeclarations"/>
+    </module>
+</module>
