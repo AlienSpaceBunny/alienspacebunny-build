@@ -9,13 +9,9 @@ This module contains shared maven config and shared build tools for AlienSpaceBu
 | `build-tools/` | `com.alienspacebunny:alienspacebunny-build-tools` (jar) | Shared `alienspacebunny/checkstyle.xml`, loaded from the Checkstyle plugin classpath |
 | `template/` + `new-project.sh` | — | Skeleton for a new project on the current parent |
 
-Only `alienspacebunny-parent` and `alienspacebunny-build-tools` are published (to Maven
-Central, once it's set up; see below). The aggregator and template are not. Until
-the version a consumer uses is on Central, install it locally from its tag:
-
-```bash
-git checkout v0.1.0 && mvn install && git checkout -
-```
+Only `alienspacebunny-parent` and `alienspacebunny-build-tools` are published to Maven
+Central (from 0.1.1). The aggregator and template are not. Consumers resolve the parent
+from Central like any other dependency; no local install is needed.
 
 ## Using the parent
 
@@ -23,7 +19,7 @@ git checkout v0.1.0 && mvn install && git checkout -
 <parent>
     <groupId>com.alienspacebunny</groupId>
     <artifactId>alienspacebunny-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <relativePath/>
 </parent>
 ```

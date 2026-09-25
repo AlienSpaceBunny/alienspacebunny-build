@@ -5,5 +5,5 @@
 ./mvnw spotless:apply  # format
 ```
 
-Requires JDK 25 and `com.alienspacebunny:alienspacebunny-parent` in the local
-Maven repository (`mvn install` in `../alienspacebunny-build`).
+Requires JDK 25. Build settings come from `com.alienspacebunny:alienspacebunny-parent`
+(Maven Central; source in `../alienspacebunny-build`).

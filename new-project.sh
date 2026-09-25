@@ -24,9 +24,11 @@ target=${4:-$(dirname "$here")/$artifact}
 [[ "$name" != *'|'* && "$name" != *'\'* && "$name" != *'&'* ]] || { echo "display name may not contain | \\ or &" >&2; exit 2; }
 [[ ! -e "$target" ]] || { echo "target already exists: $target" >&2; exit 1; }
 
-# New projects start on the parent version this checkout builds.
-parent_version=$(sed -n 's:^    <version>\(.*\)</version>$:\1:p' "$here/parent/pom.xml" | head -1)
-[[ -n "$parent_version" ]] || { echo "cannot read version from parent/pom.xml" >&2; exit 1; }
+# New projects start on the newest released parent (tag vX.Y.Z), never the -SNAPSHOT
+# that parent/pom.xml carries between releases.
+latest_tag=$(git -C "$here" tag -l 'v[0-9]*' --sort=-v:refname | head -1)
+[[ -n "$latest_tag" ]] || { echo "no vX.Y.Z release tag found; run git fetch --tags" >&2; exit 1; }
+parent_version=${latest_tag#v}
 package_path=${package//.//}
 
 cp -a "$here/template" "$target"

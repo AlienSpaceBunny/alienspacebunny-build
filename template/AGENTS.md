@@ -3,8 +3,8 @@
 ## Build / Validation Gate
 
 - Java 25, Maven 3.9.16+ via `./mvnw`. Build settings are inherited from
-  `com.alienspacebunny:alienspacebunny-parent` (`../alienspacebunny-build`); on a
-  fresh machine run `mvn install` there first.
+  `com.alienspacebunny:alienspacebunny-parent` (`../alienspacebunny-build`, published
+  on Maven Central).
 - Run `./mvnw verify` before finishing code changes. It runs tests, the JaCoCo
   coverage floor, Spotless (Palantir Java Format), Checkstyle and SpotBugs.
 - Run `./mvnw spotless:apply` to format; don't hand-format.
