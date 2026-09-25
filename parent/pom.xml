@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alienspacebunny</groupId>
     <artifactId>alienspacebunny-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AlienSpaceBunny parent POM</name>
     <description>Shared Java 25 build: plugin pins, test-library versions and the
@@ -21,7 +21,7 @@
         combine.children="append" so the defaults are kept.
     -->
     <properties>
-        <asb.build-tools.version>0.1.0</asb.build-tools.version>
+        <asb.build-tools.version>0.1.1-SNAPSHOT</asb.build-tools.version>
         <asb.checkstyle.config>alienspacebunny/checkstyle.xml</asb.checkstyle.config>
         <asb.config.dir>${maven.multiModuleProjectDirectory}/config</asb.config.dir>
         <asb.spotbugs.exclude>${asb.config.dir}/spotbugs-exclude.xml</asb.spotbugs.exclude>

@@ -4,16 +4,30 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alienspacebunny</groupId>
     <artifactId>alienspacebunny-build</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AlienSpaceBunny shared build (aggregator)</name>
     <description>Builds and installs the shared parent POM and the build-tools jar it references.
         Not a parent itself: consumers inherit from alienspacebunny-parent.</description>
+    <!-- Deliberately not on parent/pom.xml: consumers declare their own licenses. -->
+    <licenses>
+        <license>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://www.mozilla.org/MPL/2.0/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <!-- build-tools must build before parent: parent's Checkstyle plugin depends on it. -->
     <modules>
         <module>build-tools</module>
         <module>parent</module>
     </modules>
+    <scm>
+        <connection>scm:git:https://github.com/AlienSpaceBunny/alienspacebunny-build.git</connection>
+        <developerConnection>scm:git:git@github.com:AlienSpaceBunny/alienspacebunny-build.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/AlienSpaceBunny/alienspacebunny-build</url>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -62,6 +76,11 @@
                     <version>3.22.0</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>2.22.0</version>
@@ -71,5 +90,24 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!--
+                Local release: `mvn release:prepare release:perform` tags v<version>, installs
+                the release to ~/.m2 and moves to the next -SNAPSHOT. Nothing is pushed or
+                deployed; push the commits and tag explicitly. Consumers depend on release
+                versions only.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                    <goals>install</goals>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
