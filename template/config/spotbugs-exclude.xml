@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Add narrow, justified exclusions only: class + member + bug pattern, with a reason. -->
+</FindBugsFilter>
