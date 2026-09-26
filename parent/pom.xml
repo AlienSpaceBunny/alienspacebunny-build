@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alienspacebunny</groupId>
     <artifactId>alienspacebunny-parent</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AlienSpaceBunny parent POM</name>
     <description>Shared Java 25 build: plugin pins, shared library versions and the
@@ -28,7 +28,7 @@
     <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
         <connection>scm:git:https://github.com/AlienSpaceBunny/alienspacebunny-build.git</connection>
         <developerConnection>scm:git:git@github.com:AlienSpaceBunny/alienspacebunny-build.git</developerConnection>
-        <tag>v0.1.2</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/AlienSpaceBunny/alienspacebunny-build</url>
     </scm>
     <!--
@@ -43,7 +43,7 @@
         combine.children="append" so the defaults are kept.
     -->
     <properties>
-        <asb.build-tools.version>0.1.2</asb.build-tools.version>
+        <asb.build-tools.version>0.1.3-SNAPSHOT</asb.build-tools.version>
         <!-- CI passes -Dasb.central.autoPublish=true to publish without the Portal click. -->
         <asb.central.autoPublish>false</asb.central.autoPublish>
         <asb.checkstyle.config>alienspacebunny/checkstyle.xml</asb.checkstyle.config>
