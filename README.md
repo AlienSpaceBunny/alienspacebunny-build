@@ -45,9 +45,12 @@ To add to a list setting instead of replacing it, e.g. an extra source root, use
    parent's `asb.build-tools.version` property. Don't use `versions:set` for this:
    it skips them. Either
    - run the **Release** GitHub workflow (Actions → Release → Run workflow). It
-     verifies, tags `v<version>`, pushes, and uploads to Central, or
+     turns `CHANGELOG.md`'s `[Unreleased]` section into the release's section
+     (filling it from commit subjects if it is empty), verifies, tags `v<version>`,
+     pushes, and uploads to Central, or
    - release locally without publishing:
      ```bash
+     .github/scripts/promote-changelog.sh 0.1.1 && git commit -m "Update changelog for v0.1.1" CHANGELOG.md
      mvn release:prepare release:perform   # tags v0.1.1, installs 0.1.1, moves to 0.1.2-SNAPSHOT
      git push && git push origin v0.1.1    # when you choose to
      ```

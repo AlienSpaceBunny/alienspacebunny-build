@@ -55,6 +55,18 @@ jobs:
           # The POM's developerConnection is SSH; push over HTTPS with the job token instead.
           git config --global url."https://github.com/".insteadOf "git@github.com:"
 
+      # Committed before release:prepare (which refuses a dirty tree), so the tag and
+      # the push include it. Nothing is pushed if release:prepare fails.
+      - name: Promote the changelog's Unreleased section
+        if: inputs.existingTag == ''
+        env:
+          RELEASE_VERSION: ${{ inputs.releaseVersion }}
+        run: |
+          current=$(sed -n 's|^    <version>\(.*\)</version>$|\1|p' pom.xml | head -1)
+          version=${RELEASE_VERSION:-${current%-SNAPSHOT}}
+          .github/scripts/promote-changelog.sh "$version"
+          git commit --quiet -m "Update changelog for v$version" CHANGELOG.md
+
       - name: Prepare release (verify, tag, push)
         if: inputs.existingTag == ''
         env:
