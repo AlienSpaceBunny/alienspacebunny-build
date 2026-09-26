@@ -8,8 +8,8 @@
     https://github.com/palantir/gradle-baseline/blob/0257e6e26a08e78570816b5d1d6e6dcdf60b13ee/gradle-baseline-java-config/resources/checkstyle/checkstyle.xml
     Continuations are relaxed to four spaces for Palantir 2.98.0 output.
     Palantir formats on demand; all three quality checks run at verify.
-    Wildcard imports are banned. No forced-brace, Javadoc-completeness or
-    complexity policy is imposed. Violations fail the verify phase.
+    Wildcard imports, and direct use of commons-codec and JCL, are banned. No
+    forced-brace, Javadoc-completeness or complexity policy is imposed. Violations fail the verify phase.
 -->
 <module name="Checker">
     <property name="charset" value="UTF-8"/>
@@ -41,6 +41,11 @@
         <module name="ConstantName"/>
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
+        <!-- commons-codec and JCL may arrive as transitives (JGit), but code must not use them
+             directly. Setting illegalPkgs replaces the default, so keep "sun". -->
+        <module name="IllegalImport">
+            <property name="illegalPkgs" value="sun, org.apache.commons.codec, org.apache.commons.logging"/>
+        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
         <!-- Match Palantir import ordering; Spotless handles automatic cleanup. -->

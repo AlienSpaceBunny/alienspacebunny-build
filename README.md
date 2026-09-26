@@ -5,7 +5,7 @@ This module contains shared maven config and shared build tools for AlienSpaceBu
 
 | Path | Artifact | Purpose |
 |---|---|---|
-| `parent/` | `com.alienspacebunny:alienspacebunny-parent` (pom) | Java 25, plugin pins, JUnit/Mockito versions, enforcer, Spotless/Checkstyle/SpotBugs bound to `verify`, managed JaCoCo |
+| `parent/` | `com.alienspacebunny:alienspacebunny-parent` (pom) | Java 25, plugin pins, JUnit/Mockito and shared library versions (commonmark-java, JGit, JNA, snakeyaml; the Micronaut platform version as a property), enforcer, Spotless/Checkstyle/SpotBugs bound to `verify`, managed JaCoCo |
 | `build-tools/` | `com.alienspacebunny:alienspacebunny-build-tools` (jar) | Shared `alienspacebunny/checkstyle.xml`, loaded from the Checkstyle plugin classpath |
 | `template/` + `new-project.sh` | — | Skeleton for a new project on the current parent |
 
