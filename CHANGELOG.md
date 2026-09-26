@@ -6,6 +6,8 @@ artifacts and to the project template. The format follows
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-09-26
+
 ### Added
 
 - `alienspacebunny-parent` manages versions for shared runtime libraries adopted for
@@ -58,6 +60,7 @@ Initial version, installed locally only (not published to Maven Central).
   enforcer, Spotless, Checkstyle and SpotBugs bound to `verify`, managed JaCoCo.
 - `alienspacebunny-build-tools`: shared `alienspacebunny/checkstyle.xml`.
 
-[Unreleased]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/AlienSpaceBunny/alienspacebunny-build/releases/tag/v0.1.0
