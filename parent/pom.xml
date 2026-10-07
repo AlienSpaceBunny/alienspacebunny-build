@@ -50,7 +50,7 @@
         <asb.config.dir>${maven.multiModuleProjectDirectory}/config</asb.config.dir>
         <asb.spotbugs.exclude>${asb.config.dir}/spotbugs-exclude.xml</asb.spotbugs.exclude>
         <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
-        <checkstyle.version>14.1.0</checkstyle.version>
+        <checkstyle.version>14.3.0</checkstyle.version>
         <commonmark.version>0.30.0</commonmark.version>
         <coverage.agent.args/>
         <coverage.branch.minimum>0.70</coverage.branch.minimum>
