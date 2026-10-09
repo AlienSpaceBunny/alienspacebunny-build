@@ -50,8 +50,9 @@
         <asb.config.dir>${maven.multiModuleProjectDirectory}/config</asb.config.dir>
         <asb.spotbugs.exclude>${asb.config.dir}/spotbugs-exclude.xml</asb.spotbugs.exclude>
         <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
-        <checkstyle.version>14.1.0</checkstyle.version>
+        <checkstyle.version>14.3.0</checkstyle.version>
         <commonmark.version>0.30.0</commonmark.version>
+        <commons-lang3.version>3.21.0</commons-lang3.version>
         <coverage.agent.args/>
         <coverage.branch.minimum>0.70</coverage.branch.minimum>
         <coverage.line.minimum>0.80</coverage.line.minimum>
@@ -59,20 +60,32 @@
         <!-- Keep JNA current: it has had vulnerabilities, and JGit's SSH agent support uses it. -->
         <jna.version>5.19.1</jna.version>
         <junit.version>6.1.3</junit.version>
+        <!-- Keep Log4j current: it has a large vulnerability surface. -->
+        <log4j2.version>2.26.1</log4j2.version>
         <maven.compiler.release>25</maven.compiler.release>
         <!-- Not managed here: a web module imports io.micronaut.platform:micronaut-platform
              at this version in its own dependencyManagement. Importing it here would
              manage Micronaut's versions (JUnit, Jackson, Netty, ...) for every consumer. -->
         <micronaut.platform.version>5.1.5</micronaut.platform.version>
-        <mockito.version>5.23.0</mockito.version>
+        <mockito.version>5.24.0</mockito.version>
         <palantir-java-format.version>2.99.0</palantir-java-format.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <slf4j.version>2.0.20</slf4j.version>
         <snakeyaml.version>2.7</snakeyaml.version>
-        <spotless.version>3.10.3</spotless.version>
+        <spotless.version>3.10.4</spotless.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!-- BOM imports manage versions only; they add no dependencies. The Log4j BOM
+                 covers org.apache.logging.log4j artifacts alone, including transitive ones. -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
@@ -93,6 +106,11 @@
                 <version>${jna.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.commonmark</groupId>
                 <artifactId>commonmark</artifactId>
                 <version>${commonmark.version}</version>
@@ -111,6 +129,11 @@
                 <groupId>org.eclipse.jgit</groupId>
                 <artifactId>org.eclipse.jgit.ssh.apache.agent</artifactId>
                 <version>${jgit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.yaml</groupId>
