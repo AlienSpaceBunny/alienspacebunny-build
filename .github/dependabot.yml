@@ -9,3 +9,9 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      # Under Maven 3.10, central-publishing-maven-plugin (0.11.0) bundles
+      # maven-metadata-local.xml files that Maven Central rejects. Revisit when
+      # the plugin is fixed.
+      - dependency-name: "org.apache.maven:apache-maven"
+        versions: [">= 3.10.0"]
