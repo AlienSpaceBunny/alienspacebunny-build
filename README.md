@@ -87,7 +87,12 @@ One-time setup (the `com.alienspacebunny` namespace is already verified):
 3. **Recovery:** if the upload fails after the tag was pushed, run the workflow again
    with **existingTag** set (e.g. `v0.1.1`). It skips `release:prepare` and republishes that tag.
 4. **Push access:** the workflow pushes the release commits and tag to `main` with
-   the job's `GITHUB_TOKEN`. If `main` is protected, allow GitHub Actions to bypass.
+   the job's `GITHUB_TOKEN`. GitHub Actions can't be a ruleset bypass actor, so the
+   `main` ruleset only blocks deletion and force-pushes; adding required checks or
+   required PRs there would block releases.
+
+Dependabot patch and minor updates merge themselves once CI's `verify` job passes
+(`.github/workflows/ci.yml`); major updates wait for review. Merges never trigger a release.
 
 Local check without uploading (no credentials needed; it fails only at the upload
 step and leaves the bundle for inspection). Run it on a release-versioned copy:
