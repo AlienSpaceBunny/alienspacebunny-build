@@ -4,3 +4,4 @@ release.properties
 *.releaseBackup
 pom.xml.tag
 pom.xml.next
+*.versionsBackup

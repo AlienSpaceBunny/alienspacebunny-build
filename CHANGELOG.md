@@ -6,6 +6,14 @@ artifacts and to the project template. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `alienspacebunny-parent` imports the Log4j BOM (`log4j2.version`, 2.26.1). The import
+  manages versions only and adds no dependencies, but it also pins Log4j artifacts that
+  consumers receive transitively.
+- Managed versions for SLF4J (`slf4j.version`, 2.0.20; `slf4j-api`) and commons-lang3
+  (`commons-lang3.version`, 3.21.0).
+
 ## [0.1.2] - 2026-09-26
 
 ### Added
