@@ -6,6 +6,12 @@ artifacts and to the project template. The format follows
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-10-09
+
+### Changed
+
+- Pin Maven wrapper to 3.9.16; have Dependabot skip Maven 3.10+ (#7)
+
 ## [0.1.3] - 2026-10-09
 
 ### Added
@@ -70,7 +76,8 @@ Initial version, installed locally only (not published to Maven Central).
   enforcer, Spotless, Checkstyle and SpotBugs bound to `verify`, managed JaCoCo.
 - `alienspacebunny-build-tools`: shared `alienspacebunny/checkstyle.xml`.
 
-[Unreleased]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/AlienSpaceBunny/alienspacebunny-build/compare/v0.1.0...v0.1.1
