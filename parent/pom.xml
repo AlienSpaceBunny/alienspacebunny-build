@@ -51,7 +51,7 @@
         <asb.spotbugs.exclude>${asb.config.dir}/spotbugs-exclude.xml</asb.spotbugs.exclude>
         <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
         <checkstyle.version>14.3.0</checkstyle.version>
-        <commonmark.version>0.30.0</commonmark.version>
+        <commonmark.version>0.30.1</commonmark.version>
         <commons-lang3.version>3.21.0</commons-lang3.version>
         <coverage.agent.args/>
         <coverage.branch.minimum>0.70</coverage.branch.minimum>
