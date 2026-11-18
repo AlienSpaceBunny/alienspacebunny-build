@@ -52,7 +52,7 @@
         <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
         <checkstyle.version>14.4.0</checkstyle.version>
         <commonmark.version>0.32.0</commonmark.version>
-        <commons-lang3.version>3.21.0</commons-lang3.version>
+        <commons-lang3.version>3.22.0</commons-lang3.version>
         <coverage.agent.args/>
         <coverage.branch.minimum>0.70</coverage.branch.minimum>
         <coverage.line.minimum>0.80</coverage.line.minimum>
